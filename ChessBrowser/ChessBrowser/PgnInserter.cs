@@ -10,7 +10,7 @@ namespace ChessBrowser
         public PgnInserter(MySqlConnection conn) {
             this.conn = conn;
             EventCmd = conn.CreateCommand();
-            EventCmd.CommandText = @"INSERT INTO Events (Name, Site, Date)
+            EventCmd.CommandText = @"INSERT IGNORE INTO Events (Name, Site, Date)
                                      VALUES (@Name, @Site, @Date);";
 
             PlayerCmd = conn.CreateCommand();
@@ -19,7 +19,7 @@ namespace ChessBrowser
                                       ON DUPLICATE KEY UPDATE Elo = IF(@Elo > Elo, @Elo, Elo);";
 
             GameCmd = conn.CreateCommand();
-            GameCmd.CommandText = @"INSERT INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer)
+            GameCmd.CommandText = @"INSERT IGNORE INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer)
                                     VALUES (@Round, @Result, @Moves, @BlackPlayer, @WhitePlayer);";
 
             PIDCmd = conn.CreateCommand();

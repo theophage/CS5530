@@ -56,9 +56,9 @@ namespace ChessBrowser.Components.Pages
 
                     int Length = games.Count;
                     double CurrentProgress = 0;
+                    PgnInserter ChessInserter = new PgnInserter(conn);
                     foreach (ChessGame game in games)
                     {
-                        PgnInserter ChessInserter = new PgnInserter(conn);
                         ChessInserter.Insert(game);
 
                         CurrentProgress++;

@@ -2,6 +2,6 @@ wwwroot\app.css
 wwwroot\bootstrap\bootstrap.min.css
 wwwroot\bootstrap\bootstrap.min.css.map
 wwwroot\favicon.png
-C:\Users\theon\Visual Studio Code\buh\ChessBrowser\ChessBrowser\wwwroot\app.css
-C:\Users\theon\Visual Studio Code\buh\ChessBrowser\ChessBrowser\wwwroot\bootstrap\bootstrap.min.css
 C:\Users\theon\Visual Studio Code\buh\ChessBrowser\ChessBrowser\wwwroot\bootstrap\bootstrap.min.css.map
+C:\Users\theon\Visual Studio Code\buh\ChessBrowser\ChessBrowser\wwwroot\bootstrap\bootstrap.min.css
+C:\Users\theon\Visual Studio Code\buh\ChessBrowser\ChessBrowser\wwwroot\app.css
