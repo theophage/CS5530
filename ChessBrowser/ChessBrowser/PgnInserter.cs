@@ -13,7 +13,7 @@ namespace ChessBrowser
         /// The different SQLCommands created to insert into the database.
         /// Used multiple instead of one big one as that was easier to modify when editing.
         /// </summary>
-        private MySqlCommand EventCmd, PlayerCmd, GameCmd, PIDCmd, EIDCmd;
+        private MySqlCommand EventCmd, PlayerCmd, GameCmd;
         /// <summary>
         /// Creates the commands used to insert pgn files into the database.
         /// Uses prepared statements to prevent injection attacks.
@@ -32,13 +32,11 @@ namespace ChessBrowser
 
             GameCmd = conn.CreateCommand();
             GameCmd.CommandText = @"INSERT INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer, eID)
-                                    VALUES (@Round, @Result, @Moves, @BlackPlayer, @WhitePlayer, @EID);";
+                                    VALUES (@Round, @Result, @Moves, 
+                                    (SELECT pID FROM Players WHERE Name = @Black), 
+                                    (SELECT pID FROM Players WHERE Name = @White),
+                                    (SELECT eID FROM Events WHERE Name = @Name));";
 
-            PIDCmd = conn.CreateCommand();
-            PIDCmd.CommandText = @"SELECT pID FROM Players WHERE Name = @Name;";
-
-            EIDCmd = conn.CreateCommand();
-            EIDCmd.CommandText = @"SELECT eID FROM Events WHERE Name=@Name AND Site=@Site AND Date=@Date;";
         }
         public void Insert (ChessGame game) 
         {
@@ -66,21 +64,9 @@ namespace ChessBrowser
             GameCmd.Parameters.AddWithValue("@Round",game.Round);
             GameCmd.Parameters.AddWithValue("@Result",game.Result);
             GameCmd.Parameters.AddWithValue("@Moves",game.Moves);
-            PIDCmd.Parameters.Clear(); //Used to get pID from database, runs after creating players to insure pID exists
-            PIDCmd.Parameters.AddWithValue("@Name", game.BlackPlayer);
-            int.TryParse(PIDCmd.ExecuteScalar().ToString(), out int BlackPID);
-            GameCmd.Parameters.AddWithValue("@BlackPlayer",BlackPID);
-            PIDCmd.Parameters.Clear();
-            PIDCmd.Parameters.AddWithValue("@Name", game.WhitePlayer);
-            int.TryParse(PIDCmd.ExecuteScalar().ToString(), out int WhitePID);
-            GameCmd.Parameters.AddWithValue("@WhitePlayer", WhitePID);
-
-            EIDCmd.Parameters.Clear();
-            EIDCmd.Parameters.AddWithValue("@Name",game.EventName);
-            EIDCmd.Parameters.AddWithValue("@Site", game.Site);
-            EIDCmd.Parameters.AddWithValue("@Date", game.EventDate);
-            int.TryParse(EIDCmd.ExecuteScalar().ToString(), out int EID);
-            GameCmd.Parameters.AddWithValue("@EID", EID);
+            GameCmd.Parameters.AddWithValue("@Black",game.BlackPlayer);
+            GameCmd.Parameters.AddWithValue("@White", game.BlackPlayer);
+            GameCmd.Parameters.AddWithValue("@Name", game.EventName);
             GameCmd.ExecuteNonQuery();
         }
     }

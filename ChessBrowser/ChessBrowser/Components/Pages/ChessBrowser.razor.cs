@@ -109,7 +109,8 @@ namespace ChessBrowser.Components.Pages
                     // Open a connection
                     conn.Open();
 
-                    (int length, string result) = GameSearch.Search(conn, white, black, opening, winner, useDate, start, end, showMoves);
+                    (int length, string result) = GameSearch.Search
+                        (conn, white, black, opening, winner, useDate, start, end, showMoves);
                     numRows = length;
                     parsedResult = result;
                 }
