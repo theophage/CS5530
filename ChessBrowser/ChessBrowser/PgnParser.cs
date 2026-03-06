@@ -33,27 +33,27 @@
                     lastLineWasMoves = false;
                     if (line.StartsWith("[Event "))
                     {
-                        eventName = line.Split('"')[1]; // get only what's inside the quotation marks
+                        eventName = ParseTag("Event", line);
                     }
                     else if (line.StartsWith("[Site "))
                     {
-                        site = line.Split('"')[1];
+                        site = ParseTag("Site", line);
                     }
                     else if (line.StartsWith("[Round "))
                     {
-                        round = line.Split('"')[1];
+                        round = ParseTag("Round", line);
                     }
                     else if (line.StartsWith("[White "))
                     {
-                        whitePlayer = line.Split('"')[1];
+                        whitePlayer = ParseTag("White", line);
                     }
                     else if (line.StartsWith("[Black "))
                     {
-                        blackPlayer = line.Split('"')[1];
+                        blackPlayer = ParseTag("Black", line);
                     }
                     else if (line.StartsWith("[Result "))
                     {
-                        result = line.Split('"')[1];
+                        result = ParseResult(line.Split('"')[1]); // use result parser helper (W, B, or D)
                     }
                     else if (line.StartsWith("[WhiteElo "))
                     {
@@ -65,7 +65,7 @@
                     }
                     else if (line.StartsWith("[EventDate "))
                     {
-                        eventDate = ParseDate(line.Split('"')[1]); // use helper date parser
+                        eventDate = ParseDate(line.Split('"')[1]); // use date parser helper
                     }
                 }
                 else if (!string.IsNullOrWhiteSpace(line)) // if it's not a tag or empty, it's a list of moves
@@ -74,11 +74,11 @@
                     // add to the moves string
                     if (moves == "")
                     {
-                        moves = line;
+                        moves = Sanitize(line.Trim());
                     }
                     else // add a space before the next line of moves
                     {
-                        moves += " " + line;
+                        moves += " " + Sanitize(line.Trim());
                     }
                 }
                 else // empty line
@@ -147,6 +147,60 @@
             DateTime date = DateTime.Parse($"{month}/{day}/{year}");
 
             return date;
+        }
+
+        /// <summary>
+        /// Sanitizes a string for MySQL. Escapes " and \
+        /// </summary>
+        /// <param name="input">The string to sanitize</param>
+        /// <returns>The sanitized string</returns>
+        private static string Sanitize(string input)
+        {
+            string sanitized = "";
+            foreach (char c in input)
+            {
+                if (c == '"' || c == '\\')
+                {
+                    sanitized += @"\";
+                }
+                sanitized += c;
+            }
+            return sanitized;
+        }
+
+        /// <summary>
+        /// Parses a sanitized tag from a tag line from the PGN file
+        /// </summary>
+        /// <param name="tagName">The tag name of the line being parsed</param>
+        /// <param name="line">The full line containing the tag</param>
+        /// <returns>The sanitized tag</returns>
+        private static string ParseTag(string tagName, string line)
+        {
+            string tagLine = line.Trim();
+            // get substring from a line like [tagName "tag"]
+            string tag = tagLine.Substring(tagName.Length + 3, tagLine.Length - tagName.Length - 5);
+            return Sanitize(tag);
+        }
+
+        /// <summary>
+        /// Gets the result of the game as a W, B, or D from the PGN format (1-0, 0-1, or 1/2-1/2)
+        /// </summary>
+        /// <param name="result">The result tag section from the result line</param>
+        /// <returns>The result: "W", "B", or "D"</returns>
+        private static string ParseResult(string result)
+        {
+            if (result == "1-0")
+            {
+                return "W";
+            }
+            else if (result == "0-1")
+            {
+                return "B";
+            }
+            else
+            {
+                return "D";
+            }
         }
     }
 }
