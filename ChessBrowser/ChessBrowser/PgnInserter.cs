@@ -31,7 +31,7 @@ namespace ChessBrowser
                                       ON DUPLICATE KEY UPDATE Elo = IF(@Elo > Elo, @Elo, Elo);"; //Makes Elo higher of the two values
 
             GameCmd = conn.CreateCommand();
-            GameCmd.CommandText = @"INSERT INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer, eID)
+            GameCmd.CommandText = @"INSERT IGNORE INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer, eID)
                                     VALUES (@Round, @Result, @Moves, 
                                     (SELECT pID FROM Players WHERE Name = @Black), 
                                     (SELECT pID FROM Players WHERE Name = @White),
@@ -65,7 +65,7 @@ namespace ChessBrowser
             GameCmd.Parameters.AddWithValue("@Result",game.Result);
             GameCmd.Parameters.AddWithValue("@Moves",game.Moves);
             GameCmd.Parameters.AddWithValue("@Black",game.BlackPlayer);
-            GameCmd.Parameters.AddWithValue("@White", game.BlackPlayer);
+            GameCmd.Parameters.AddWithValue("@White", game.WhitePlayer);
             GameCmd.Parameters.AddWithValue("@Name", game.EventName);
             GameCmd.ExecuteNonQuery();
         }

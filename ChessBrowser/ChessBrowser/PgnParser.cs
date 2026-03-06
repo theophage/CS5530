@@ -141,15 +141,17 @@
         /// <param name="input">The input date in yyyy.mm.dd format</param>
         /// <returns>The output DateTime object matching the input</returns>
         private static DateTime ParseDate(string input)
-        {
-            string year = input.Split('.')[0];
-            string month = input.Split('.')[1];
-            string day = input.Split('.')[2];
-
-            DateTime date = DateTime.Parse($"{month}/{day}/{year}");
-
-            return date;
-        }
+{
+    string[] parts = input.Split('.');
+    if (!int.TryParse(parts[0], out int year) ||
+        !int.TryParse(parts[1], out int month) ||
+        !int.TryParse(parts[2], out int day))
+    {
+        return new DateTime(1000,01,01);//Updated, initially tried 0000's as per instructions, but that didn't work
+                                        //After google search found minimum could be 1000-01-01 which proceeded to work.
+    }
+    return new DateTime(year, month, day);
+}
 
         /// <summary>
         /// Sanitizes a string for MySQL. Escapes " and \
