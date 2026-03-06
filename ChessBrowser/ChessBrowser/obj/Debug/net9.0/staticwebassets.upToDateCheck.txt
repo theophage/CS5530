@@ -1,0 +1,7 @@
+wwwroot\app.css
+wwwroot\bootstrap\bootstrap.min.css
+wwwroot\bootstrap\bootstrap.min.css.map
+wwwroot\favicon.png
+D:\Classes\CS5530\Chess Repo\ChessBrowser\ChessBrowser\wwwroot\app.css
+D:\Classes\CS5530\Chess Repo\ChessBrowser\ChessBrowser\wwwroot\bootstrap\bootstrap.min.css
+D:\Classes\CS5530\Chess Repo\ChessBrowser\ChessBrowser\wwwroot\bootstrap\bootstrap.min.css.map
