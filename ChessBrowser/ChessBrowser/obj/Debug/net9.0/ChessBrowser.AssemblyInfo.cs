@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChessBrowser")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+459ad1b69b8a5f30b3142abc45c49b18c580e65f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+008f07f3d4776917091b9250e044f91e58395b29")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChessBrowser")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChessBrowser")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

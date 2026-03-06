@@ -13,7 +13,7 @@ namespace ChessBrowser
         /// The different SQLCommands created to insert into the database.
         /// Used multiple instead of one big one as that was easier to modify when editing.
         /// </summary>
-        private MySqlCommand EventCmd, PlayerCmd, GameCmd, PIDCmd;
+        private MySqlCommand EventCmd, PlayerCmd, GameCmd, PIDCmd, EIDCmd;
         /// <summary>
         /// Creates the commands used to insert pgn files into the database.
         /// Uses prepared statements to prevent injection attacks.
@@ -31,11 +31,14 @@ namespace ChessBrowser
                                       ON DUPLICATE KEY UPDATE Elo = IF(@Elo > Elo, @Elo, Elo);"; //Makes Elo higher of the two values
 
             GameCmd = conn.CreateCommand();
-            GameCmd.CommandText = @"INSERT IGNORE INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer)
-                                    VALUES (@Round, @Result, @Moves, @BlackPlayer, @WhitePlayer);";
+            GameCmd.CommandText = @"INSERT INTO Games (Round, Result, Moves, BlackPlayer, WhitePlayer, eID)
+                                    VALUES (@Round, @Result, @Moves, @BlackPlayer, @WhitePlayer, @EID);";
 
             PIDCmd = conn.CreateCommand();
-            PIDCmd.CommandText = @"SELECT pID FROM Players WHERE Name = @Name";
+            PIDCmd.CommandText = @"SELECT pID FROM Players WHERE Name = @Name;";
+
+            EIDCmd = conn.CreateCommand();
+            EIDCmd.CommandText = @"SELECT eID FROM Events WHERE Name=@Name AND Site=@Site AND Date=@Date;";
         }
         public void Insert (ChessGame game) 
         {
@@ -71,6 +74,13 @@ namespace ChessBrowser
             PIDCmd.Parameters.AddWithValue("@Name", game.WhitePlayer);
             int.TryParse(PIDCmd.ExecuteScalar().ToString(), out int WhitePID);
             GameCmd.Parameters.AddWithValue("@WhitePlayer", WhitePID);
+
+            EIDCmd.Parameters.Clear();
+            EIDCmd.Parameters.AddWithValue("@Name",game.EventName);
+            EIDCmd.Parameters.AddWithValue("@Site", game.Site);
+            EIDCmd.Parameters.AddWithValue("@Date", game.EventDate);
+            int.TryParse(EIDCmd.ExecuteScalar().ToString(), out int EID);
+            GameCmd.Parameters.AddWithValue("@EID", EID);
             GameCmd.ExecuteNonQuery();
         }
     }

@@ -109,9 +109,9 @@ namespace ChessBrowser.Components.Pages
                     // Open a connection
                     conn.Open();
 
-                    // TODO:
-                    //   Generate and execute an SQL command,
-                    //   then parse the results into an appropriate string and return it.
+                    (int length, string result) = GameSearch.Search(conn, white, black, opening, winner, useDate, start, end, showMoves);
+                    numRows = length;
+                    parsedResult = result;
                 }
                 catch (Exception e)
                 {
