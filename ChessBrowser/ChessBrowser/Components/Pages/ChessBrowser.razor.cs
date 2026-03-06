@@ -41,9 +41,6 @@ namespace ChessBrowser.Components.Pages
             // assuimg you've filled in the credentials in the GUI
             string connection = GetConnectionString();
 
-            // TODO:
-            //   Parse the provided PGN data
-            //   We recommend creating separate libraries to represent chess data and load the file
             List<ChessGame> games = PgnParser.ParseLines(PGNFileLines);
 
 
@@ -62,7 +59,8 @@ namespace ChessBrowser.Components.Pages
                         ChessInserter.Insert(game);
 
                         CurrentProgress++;
-                        Progress = (int)((CurrentProgress / Length)*100);
+                        Progress = (int)((CurrentProgress / Length)*100); //Makes percentage of 100 for GUI
+
                         // This tells the GUI to redraw after you update Progress (this should go inside your loop)
                         await InvokeAsync(StateHasChanged);
                     }
