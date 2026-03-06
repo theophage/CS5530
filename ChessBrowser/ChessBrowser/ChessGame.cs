@@ -38,6 +38,10 @@
         /// The official date of the event
         /// </summary>
         public DateTime EventDate { get; set; }
+        /// <summary>
+        /// The moves that were played in the game
+        /// </summary>
+        public string Moves { get; set; }
 
         /// <summary>
         /// A representation of a chess game
@@ -51,8 +55,18 @@
         /// <param name="whiteElo">The ELO of the white player at the time</param>
         /// <param name="blackElo">The ELO of the black player at the time</param>
         /// <param name="eventDate">The official date of the event</param>
-        public ChessGame(string eventName, string site, string round, string whitePlayer, string blackPlayer, 
-            string result, uint whiteElo, uint blackElo, DateTime eventDate)
+        /// <param name="moves">The moves that were played in the game</param>
+        public ChessGame(
+            string eventName, 
+            string site, 
+            string round, 
+            string whitePlayer, 
+            string blackPlayer, 
+            string result, 
+            uint whiteElo, 
+            uint blackElo, 
+            DateTime eventDate,
+            string moves)
         {
             EventName = eventName;
             Site = site;
@@ -63,6 +77,7 @@
             WhiteElo = whiteElo;
             BlackElo = blackElo;
             EventDate = eventDate;
+            Moves = moves;
         }
     }
 }
