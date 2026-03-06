@@ -62,12 +62,12 @@ namespace ChessBrowser
                     {
                         if (key == "White")
                         {
-                            Final += "White: " + reader[key].ToString() + "(" + reader["WhiteElo"].ToString() + ")\n";
+                            Final += "White: " + reader[key].ToString() + " (" + reader["WhiteElo"].ToString() + ")\n";
                         } 
 
                         else if (key == "Black")
                         {
-                            Final += "Black: " + reader[key].ToString() + "(" + reader["BlackElo"].ToString() + ")\n";
+                            Final += "Black: " + reader[key].ToString() + " (" + reader["BlackElo"].ToString() + ")\n";
                         } 
                         
                         else
