@@ -1,4 +1,4 @@
-/* /Components/Layout/MainLayout.razor.rz.scp.css */
+/* _content/ChessBrowser/Components/Layout/MainLayout.razor.rz.scp.css */
 .page[b-bcoile4243] {
     position: relative;
     display: flex;
@@ -95,7 +95,7 @@ main[b-bcoile4243] {
         right: 0.75rem;
         top: 0.5rem;
     }
-/* /Components/Layout/NavMenu.razor.rz.scp.css */
+/* _content/ChessBrowser/Components/Layout/NavMenu.razor.rz.scp.css */
 .navbar-toggler[b-ey1eca1o4m] {
     appearance: none;
     cursor: pointer;

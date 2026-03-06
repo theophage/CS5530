@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using System.Diagnostics;
 using MySql.Data.MySqlClient;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChessBrowser.Components.Pages
 {
@@ -53,19 +54,18 @@ namespace ChessBrowser.Components.Pages
                     // Open a connection
                     conn.Open();
 
-                    // TODO:
-                    //   Iterate through your data and generate appropriate insert commands
+                    int Length = games.Count;
+                    double CurrentProgress = 0;
+                    foreach (ChessGame game in games)
+                    {
+                        PgnInserter ChessInserter = new PgnInserter(conn);
+                        ChessInserter.Insert(game);
 
-                    // TODO:
-                    //   Update the Progress member variable every time progress has been made
-                    //   (e.g. one iteration of your upload loop)
-                    //   This will update the progress bar in the GUI
-                    //   Its value should be an integer representing a percentage of completion
-                    Progress = 0;
-
-                    // This tells the GUI to redraw after you update Progress (this should go inside your loop)
-                    await InvokeAsync(StateHasChanged);
-
+                        CurrentProgress++;
+                        Progress = (int)((CurrentProgress / Length)*100);
+                        // This tells the GUI to redraw after you update Progress (this should go inside your loop)
+                        await InvokeAsync(StateHasChanged);
+                    }
 
                 }
                 catch (Exception e)

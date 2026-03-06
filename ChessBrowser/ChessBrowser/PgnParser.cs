@@ -31,41 +31,43 @@
                 if (line.StartsWith("["))
                 {
                     lastLineWasMoves = false;
-                    if (line.StartsWith("[Event "))
+                    switch (line)
                     {
-                        eventName = ParseTag("Event", line);
-                    }
-                    else if (line.StartsWith("[Site "))
-                    {
-                        site = ParseTag("Site", line);
-                    }
-                    else if (line.StartsWith("[Round "))
-                    {
-                        round = ParseTag("Round", line);
-                    }
-                    else if (line.StartsWith("[White "))
-                    {
-                        whitePlayer = ParseTag("White", line);
-                    }
-                    else if (line.StartsWith("[Black "))
-                    {
-                        blackPlayer = ParseTag("Black", line);
-                    }
-                    else if (line.StartsWith("[Result "))
-                    {
-                        result = ParseResult(line.Split('"')[1]); // use result parser helper (W, B, or D)
-                    }
-                    else if (line.StartsWith("[WhiteElo "))
-                    {
-                        whiteElo = UInt32.Parse(line.Split('"')[1]); // parse uint
-                    }
-                    else if (line.StartsWith("[BlackElo "))
-                    {
-                        blackElo = UInt32.Parse(line.Split('"')[1]); // parse uint
-                    }
-                    else if (line.StartsWith("[EventDate "))
-                    {
-                        eventDate = ParseDate(line.Split('"')[1]); // use date parser helper
+                        case string s when s.StartsWith("[Event "):
+                            eventName = ParseTag("Event", s);
+                            break;
+
+                        case string s when s.StartsWith("[Site "):
+                            site = ParseTag("Site", s);
+                            break;
+
+                        case string s when s.StartsWith("[Round "):
+                            round = ParseTag("Round", s);
+                            break;
+
+                        case string s when s.StartsWith("[White "):
+                            whitePlayer = ParseTag("White", s);
+                            break;
+
+                        case string s when s.StartsWith("[Black "):
+                            blackPlayer = ParseTag("Black", s);
+                            break;
+
+                        case string s when s.StartsWith("[Result "):
+                            result = ParseResult(s.Split('"')[1]);
+                            break;
+
+                        case string s when s.StartsWith("[WhiteElo "):
+                            whiteElo = UInt32.Parse(s.Split('"')[1]);
+                            break;
+
+                        case string s when s.StartsWith("[BlackElo "):
+                            blackElo = UInt32.Parse(s.Split('"')[1]);
+                            break;
+
+                        case string s when s.StartsWith("[EventDate "):
+                            eventDate = ParseDate(s.Split('"')[1]);
+                            break;
                     }
                 }
                 else if (!string.IsNullOrWhiteSpace(line)) // if it's not a tag or empty, it's a list of moves
